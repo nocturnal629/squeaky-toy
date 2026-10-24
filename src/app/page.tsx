@@ -92,8 +92,11 @@ export default function Home() {
   });
 
   const handleEnable = async () => {
-    await unlockAudio(); // keep within the gesture
-    await requestPermission();
+    // iOS only allows the motion prompt directly inside the tap, so fire it
+    // first (no awaits before it); audio unlock runs alongside.
+    const motion = requestPermission();
+    const audio = unlockAudio();
+    await Promise.all([motion, audio]);
     setShowModal(false);
   };
 
