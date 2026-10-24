@@ -24,6 +24,8 @@ export function useShakeDetection({
   const [permission, setPermission] = useState<MotionPermission>("unknown");
   const onShakeRef = useRef(onShake);
   const thresholdRef = useRef(threshold);
+  const stats = useRef({ events: 0, force: 0 });
+  const [sensor, setSensor] = useState({ events: 0, force: 0 });
 
   useEffect(() => {
     onShakeRef.current = onShake;
@@ -53,6 +55,8 @@ export function useShakeDetection({
       if (!a || a.x == null || a.y == null || a.z == null) return;
       // Deviation of total acceleration from gravity (~9.81 m/s²): ~0 at rest, 10-40 when shaken.
       const force = Math.abs(Math.sqrt(a.x * a.x + a.y * a.y + a.z * a.z) - 9.81);
+      stats.current.events += 1;
+      stats.current.force = force;
       const now = Date.now();
       if (force > thresholdRef.current && now - lastShake > cooldownMs) {
         lastShake = now;
@@ -61,7 +65,12 @@ export function useShakeDetection({
     };
 
     window.addEventListener("devicemotion", handler);
-    return () => window.removeEventListener("devicemotion", handler);
+    // Surface live sensor stats (~7 Hz) for the on-screen diagnostic.
+    const timer = setInterval(() => setSensor({ ...stats.current }), 150);
+    return () => {
+      window.removeEventListener("devicemotion", handler);
+      clearInterval(timer);
+    };
   }, [permission, cooldownMs]);
 
   /** Must be called from a user gesture (required by iOS). */
@@ -85,5 +94,5 @@ export function useShakeDetection({
     return "granted" as const;
   }, []);
 
-  return { permission, requestPermission };
+  return { permission, requestPermission, sensor };
 }

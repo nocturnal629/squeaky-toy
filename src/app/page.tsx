@@ -85,7 +85,7 @@ export default function Home() {
     src.start();
   }, []);
 
-  const { permission, requestPermission } = useShakeDetection({
+  const { permission, requestPermission, sensor } = useShakeDetection({
     threshold,
     cooldownMs: DEBOUNCE_MS,
     onShake: squeak,
@@ -105,12 +105,24 @@ export default function Home() {
     void unlockAudio().then(squeak);
   };
 
+  // Granted but no readings after a few seconds => browser/OS is blocking the sensor.
+  const [noData, setNoData] = useState(false);
+  useEffect(() => {
+    if (permission !== "granted" || showModal || sensor.events > 0) {
+      setNoData(false);
+      return;
+    }
+    const t = setTimeout(() => setNoData(true), 2500);
+    return () => clearTimeout(t);
+  }, [permission, showModal, sensor.events]);
+
   const motionStatus = useMemo(() => {
+    if (permission === "granted" && noData) return "No motion data — allow Motion sensors in browser site settings";
     if (permission === "granted") return "Shake detection on 📳";
     if (permission === "denied") return "Motion blocked — tap instead";
     if (permission === "unsupported") return "No motion sensor — tap instead";
     return "";
-  }, [permission]);
+  }, [permission, noData]);
 
   return (
     <main className="bg-scene relative app-h flex w-full flex-col items-center justify-between overflow-hidden">
@@ -213,6 +225,11 @@ export default function Home() {
             Gentle
             <span className="w-6 text-right">{threshold}</span>
           </label>
+        )}
+        {showSettings && (
+          <p className="text-xs text-white">
+            Sensor: {sensor.events} readings · force {sensor.force.toFixed(1)} (shake needs &gt; {threshold})
+          </p>
         )}
         <a
           href="https://vercel.com"

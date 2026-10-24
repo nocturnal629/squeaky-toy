@@ -186,8 +186,8 @@ export default function Toy({ animal, hitCount, onTap }: Props) {
         className="block cursor-pointer focus:outline-none"
       >
         <motion.svg
-          viewBox="-10 -60 320 400"
-          className="h-[34vh] max-h-[380px] w-auto overflow-visible drop-shadow-xl"
+          viewBox="-10 -50 320 390"
+          className="h-[52vh] max-h-[460px] w-auto overflow-visible drop-shadow-xl"
           animate={{ scale: [1, 1.03, 1] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
         >
