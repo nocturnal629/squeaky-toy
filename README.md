@@ -10,7 +10,7 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:3000. On desktop, use the **Shake!** button or click the panda.
+Open http://localhost:3000. On desktop, click the toy.
 To test shaking on a phone, deploy to Vercel (motion sensors require HTTPS).
 
 ## 1. Add the sound
@@ -39,7 +39,7 @@ git push -u origin main
 - `useShakeDetection` listens to `devicemotion` and fires when the change in acceleration exceeds an adjustable threshold (Sensitivity link in the UI). iOS needs `DeviceMotionEvent.requestPermission()` from a user gesture.
 - `PermissionModal` runs that request and also resumes the Web Audio context, which browsers only allow after a gesture.
 - Audio is decoded once with the Web Audio API, with a 200 ms debounce and a random playback-rate (0.9–1.15) for pitch variation.
-- Tapping the panda or the **Shake!** button is the fallback if motion is denied or unsupported.
+- Tapping the toy is the fallback if motion is denied or unsupported.
 
 ## Customizing the toy
 

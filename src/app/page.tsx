@@ -161,7 +161,7 @@ export default function Home() {
       </motion.h1>
 
       {/* toy */}
-      <div className="z-10 flex flex-1 items-center justify-center">
+      <div className="z-10 flex flex-1 items-start justify-center pt-1">
         <Toy animal={animal} hitCount={hitCount} onTap={handleTap} />
       </div>
 
@@ -188,13 +188,6 @@ export default function Home() {
         <p className="font-bubbly text-lg font-bold text-white" style={{ textShadow: "0 2px 4px rgba(2,132,199,.6)" }}>
           Tap or Shake Your Phone!
         </p>
-        <motion.button
-          onClick={handleTap}
-          whileTap={{ scale: 0.9 }}
-          className="font-bubbly rounded-full bg-pink-500 px-8 py-3 text-xl font-extrabold text-white shadow-lg"
-        >
-          Shake!
-        </motion.button>
         <div className="flex items-center gap-3 text-xs text-white/90">
           <span>{motionStatus}</span>
           {permission === "denied" || permission === "unknown" ? (
