@@ -10,7 +10,7 @@ const DEBOUNCE_MS = 200;
 
 export default function Home() {
   const [hitCount, setHitCount] = useState(0);
-  const [threshold, setThreshold] = useState(15);
+  const [threshold, setThreshold] = useState(10);
   const [animal, setAnimal] = useState<Animal>("panda");
 
   useEffect(() => {
@@ -208,8 +208,8 @@ export default function Home() {
             Hard
             <input
               type="range"
-              min={5}
-              max={40}
+              min={3}
+              max={30}
               value={threshold}
               onChange={(e) => setThreshold(Number(e.target.value))}
               aria-label="Shake force threshold"

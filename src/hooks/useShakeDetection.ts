@@ -9,7 +9,7 @@ type IOSDeviceMotionEvent = typeof DeviceMotionEvent & {
 };
 
 interface Options {
-  /** Change in acceleration (m/s²) between samples that counts as a shake. */
+  /** Deviation from gravity (m/s²) that counts as a shake. */
   threshold?: number;
   /** Minimum ms between shake callbacks. */
   cooldownMs?: number;
@@ -17,14 +17,13 @@ interface Options {
 }
 
 export function useShakeDetection({
-  threshold = 15,
+  threshold = 10,
   cooldownMs = 200,
   onShake,
 }: Options) {
   const [permission, setPermission] = useState<MotionPermission>("unknown");
   const onShakeRef = useRef(onShake);
   const thresholdRef = useRef(threshold);
-  const last = useRef({ x: 0, y: 0, z: 0, t: 0, init: false });
 
   useEffect(() => {
     onShakeRef.current = onShake;
@@ -52,16 +51,13 @@ export function useShakeDetection({
     const handler = (e: DeviceMotionEvent) => {
       const a = e.accelerationIncludingGravity;
       if (!a || a.x == null || a.y == null || a.z == null) return;
-      const prev = last.current;
-      if (prev.init) {
-        const force = Math.abs(a.x - prev.x) + Math.abs(a.y - prev.y) + Math.abs(a.z - prev.z);
-        const now = Date.now();
-        if (force > thresholdRef.current && now - lastShake > cooldownMs) {
-          lastShake = now;
-          onShakeRef.current(force);
-        }
+      // Deviation of total acceleration from gravity (~9.81 m/s²): ~0 at rest, 10-40 when shaken.
+      const force = Math.abs(Math.sqrt(a.x * a.x + a.y * a.y + a.z * a.z) - 9.81);
+      const now = Date.now();
+      if (force > thresholdRef.current && now - lastShake > cooldownMs) {
+        lastShake = now;
+        onShakeRef.current(force);
       }
-      last.current = { x: a.x, y: a.y, z: a.z, t: Date.now(), init: true };
     };
 
     window.addEventListener("devicemotion", handler);
