@@ -17,6 +17,11 @@ body {
   touch-action: manipulation;
 }
 
+.app-h {
+  height: 100vh; /* fallback */
+  height: 100dvh; /* visible viewport, excludes browser bars */
+}
+
 .bg-scene {
   background: linear-gradient(180deg, #bae6fd 0%, #e0f2fe 35%, #86efac 62%, #38bdf8 62.1%, #0ea5e9 100%);
 }

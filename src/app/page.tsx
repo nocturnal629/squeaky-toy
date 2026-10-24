@@ -110,7 +110,7 @@ export default function Home() {
   }, [permission]);
 
   return (
-    <main className="bg-scene relative flex h-screen h-dvh w-full flex-col items-center justify-between overflow-hidden">
+    <main className="bg-scene relative app-h flex w-full flex-col items-center justify-between overflow-hidden">
       {/* water ripples */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[38%]">
         {[0, 1, 2].map((i) => (
@@ -149,7 +149,7 @@ export default function Home() {
 
       {/* title */}
       <motion.h1
-        className="font-bubbly z-10 mt-8 text-5xl font-extrabold text-white"
+        className="font-bubbly z-10 mt-4 text-4xl font-extrabold text-white"
         style={{ textShadow: "0 4px 0 #0ea5e9, 0 8px 12px rgba(2,132,199,.4)" }}
         animate={{ scale: [1, 1.06, 1], rotate: [-2, 2, -2] }}
         transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
@@ -163,7 +163,7 @@ export default function Home() {
       </div>
 
       {/* animal picker */}
-      <div className="z-10 mb-3 flex gap-2 rounded-full bg-white/30 p-1.5 backdrop-blur" role="radiogroup" aria-label="Choose your toy">
+      <div className="z-10 mb-2 flex gap-2 rounded-full bg-white/30 p-1.5 backdrop-blur" role="radiogroup" aria-label="Choose your toy">
         {ANIMALS.map((a) => (
           <button
             key={a.id}
@@ -181,7 +181,7 @@ export default function Home() {
       </div>
 
       {/* controls */}
-      <div className="z-10 mb-4 flex flex-col items-center gap-2 px-4">
+      <div className="z-10 flex flex-col items-center gap-2 px-4 pb-[calc(1.25rem+env(safe-area-inset-bottom))]">
         <p className="font-bubbly text-lg font-bold text-white" style={{ textShadow: "0 2px 4px rgba(2,132,199,.6)" }}>
           Tap or Shake Your Phone!
         </p>
