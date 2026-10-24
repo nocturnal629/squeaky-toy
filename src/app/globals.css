@@ -1,0 +1,86 @@
+@import "tailwindcss";
+
+@theme {
+  --font-bubbly: "Comic Sans MS", "Chalkboard SE", "Marker Felt", "Trebuchet MS",
+    ui-rounded, system-ui, sans-serif;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  overscroll-behavior: none;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.bg-scene {
+  background: linear-gradient(180deg, #bae6fd 0%, #e0f2fe 35%, #86efac 62%, #38bdf8 62.1%, #0ea5e9 100%);
+}
+
+@keyframes bubble-rise {
+  0% {
+    transform: translateY(0) translateX(0) scale(0.6);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-110vh) translateX(var(--drift, 20px)) scale(1.1);
+    opacity: 0;
+  }
+}
+
+.bubble {
+  position: absolute;
+  bottom: -40px;
+  border-radius: 9999px;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.25) 60%, rgba(255, 255, 255, 0.1));
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  animation: bubble-rise linear infinite;
+  pointer-events: none;
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0.3);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+.ripple {
+  position: absolute;
+  border-radius: 9999px;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  animation: ripple 4s ease-out infinite;
+  pointer-events: none;
+}
+
+@keyframes wave {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.wave {
+  animation: wave 8s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bubble,
+  .ripple,
+  .wave {
+    animation: none;
+  }
+}
